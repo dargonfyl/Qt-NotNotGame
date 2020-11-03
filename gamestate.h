@@ -1,28 +1,58 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <QObject>
+#include <QTimer>
+
+
+// NOTE: not using QT_BEGIN_NAMESPACE because it's unecessary
+
 namespace Game {
-enum Color {
-    RED,
-    GREEN,
-    BLUE,
-    YELLOW
-};
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
 
-
-class GameState
+/**
+ * @brief The GameState class. Inherits from QObject for
+ */
+class GameState : public QObject
 {
+
+Q_OBJECT
+
+private:
+    unsigned int score;
+
+    unsigned int timerMax;  // How much time is left
+
+    QTimer *timer;
+
+    void resetTime();
+
+private slots:
+    void timedOut();
+
 public:
+    /**
+     * @brief GameState constructor.
+     */
     GameState();
+
+
     ~GameState();
 
-    static void increaseScore();
+    /**
+     * @brief Increases score by 1
+     */
+    void increaseScore();
+
+
+    unsigned int getScore();
+
+
+    QTimer *getTimer();
+
+    /**
+     * @brief Resets game state. Score goes to 0.
+     */
+    void reset();
 };
 }
 
