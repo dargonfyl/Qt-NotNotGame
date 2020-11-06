@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include "gamestate.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,5 +24,8 @@ private:
 
 private slots:
     void colorPressed();
+
+    void updateTimerBar(int remaining);
+
 };
 #endif // MAINWINDOW_H

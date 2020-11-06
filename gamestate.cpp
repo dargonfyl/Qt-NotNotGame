@@ -2,19 +2,23 @@
 
 #include <assert.h>
 #include <iostream>
+#include <random>
 
-#define TIMER_MAX 5000
-#define TIMER_MIN 150
+#define TIMER_MAX_INTERVAL    5000
+#define TIMER_MIN_INTERVAL    150
+#define UPDATE_TIMER_INTERVAL 5
 
 
 Game::GameState::GameState() :
     QObject(nullptr),
+    active(false),
     score(0),
-    timerMax(TIMER_MAX),
-    timer(new QTimer())
+    timerMax(TIMER_MAX_INTERVAL),
+    timer(new QTimer()),
+    updateTimer(new QTimer())
 {
     connect(timer, SIGNAL(timeout()), this, SLOT(timedOut()));
-    timer->start(1000);
+    connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
 }
 
 
@@ -42,12 +46,30 @@ QTimer *Game::GameState::getTimer() {
 }
 
 
+void Game::GameState::startGame() {
+    timer->start(TIMER_MAX_INTERVAL);
+    updateTimer->start(UPDATE_TIMER_INTERVAL);
+}
+
+
 void Game::GameState::reset()
 {
+    score = 0;
+    timer->stop();
+    updateTimer->stop();
+}
 
+
+bool Game::GameState::isActive() {
+    return active;
 }
 
 
 void Game::GameState::timedOut() {
     std::cout << "Timed out!" << std::endl;
+}
+
+
+void Game::GameState::updateTime() {
+    emit timeRemaining(timer->remainingTime());
 }
