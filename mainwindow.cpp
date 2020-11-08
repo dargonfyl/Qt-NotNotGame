@@ -2,6 +2,17 @@
 #include "./ui_mainwindow.h"
 
 #include <iostream>
+#include <QPalette>
+
+
+void setButtonColor(QPushButton *button, Qt::GlobalColor color) {
+    QPalette pal = button->palette();
+    pal.setColor(QPalette::Button, QColor(color));
+    button->setAutoFillBackground(true);
+    button->setPalette(pal);
+    button->update();
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -9,6 +20,13 @@ MainWindow::MainWindow(QWidget *parent)
     , state(new Game::GameState())
 {
     ui->setupUi(this);
+
+
+    // Set button colors
+    setButtonColor(ui->red, Qt::red);
+    setButtonColor(ui->green, Qt::green);
+    setButtonColor(ui->blue, Qt::blue);
+    setButtonColor(ui->yellow, Qt::yellow);
 
     // Connect buttons to gamestate
     connect(ui->red, SIGNAL(pressed()), this, SLOT(colorPressed()));
@@ -41,3 +59,4 @@ void MainWindow::updateTimerBar(int remaining)
 {
 
 }
+

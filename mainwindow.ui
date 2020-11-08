@@ -86,9 +86,9 @@
       <item row="4" column="0">
        <layout class="QHBoxLayout" name="buttons">
         <item>
-         <widget class="QPushButton" name="green">
+         <widget class="QPushButton" name="red">
           <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255)</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -96,7 +96,10 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="red">
+         <widget class="QPushButton" name="green">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -104,6 +107,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="blue">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -111,6 +117,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="yellow">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string/>
           </property>
