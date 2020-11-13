@@ -37,6 +37,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->timerBar->setRange(0, 5000);
     connect(state, SIGNAL(timeRemaining(int)), ui->timerBar, SLOT(setValue(int)));
 
+
+    // Connect new levels to visuals
+    // TODO: at the start of the game, we always start with green. Fix this
+    connect(state, SIGNAL(generateLevel()), this, SLOT(generatedLevel()));
+
     state->startGame();
 }
 
@@ -55,8 +60,35 @@ void MainWindow::colorPressed()
 }
 
 
-void MainWindow::updateTimerBar(int remaining)
-{
+void MainWindow::generatedLevel() {
+    Game::INPUT input = state->getInput();
 
+    QLabel *inputs[] = {
+        ui->input0,
+        ui->input1,
+        ui->input2,
+        ui->input3,
+        ui->input4,
+        ui->input5,
+        ui->input6,
+        ui->input7
+    };
+    // Clear all the inputs
+    for (int i = 0; i < 8; i++)
+        inputs[i]->clear();
+
+    QString input_texts[] = {
+        "RED",
+        "GREEN",
+        "BLUE",
+        "YELLOW",
+        "UP",
+        "DOWN",
+        "LEFT",
+        "RIGHT"
+    };
+
+    QLabel *to_update = inputs[input];
+    to_update->setText(input_texts[input]);
 }
 

@@ -8,6 +8,8 @@
 #define TIMER_MIN_INTERVAL    150
 #define UPDATE_TIMER_INTERVAL 5
 
+#define MAX_INPUTS_ACTIVE     7 // max number of inputs to be generated
+
 
 Game::GameState::GameState() :
     QObject(nullptr),
@@ -19,6 +21,9 @@ Game::GameState::GameState() :
 {
     connect(timer, SIGNAL(timeout()), this, SLOT(timedOut()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
+
+    generate();
+
 }
 
 
@@ -32,6 +37,7 @@ void Game::GameState::increaseScore()
 {
     ++score;
     std::cout << score << std::endl;
+    generate(); // Next level
 }
 
 
@@ -41,12 +47,9 @@ unsigned int Game::GameState::getScore()
 }
 
 
-QTimer *Game::GameState::getTimer() {
-    return timer;
-}
-
-
 void Game::GameState::startGame() {
+    this->generate();
+
     timer->start(TIMER_MAX_INTERVAL);
     updateTimer->start(UPDATE_TIMER_INTERVAL);
 }
@@ -72,4 +75,24 @@ void Game::GameState::timedOut() {
 
 void Game::GameState::updateTime() {
     emit timeRemaining(timer->remainingTime());
+}
+
+
+void Game::GameState::generate() {
+    input = (Game::INPUT)(rand() & RIGHT);
+    negation = (Game::NEGATION)(rand() % 4);
+    assert(input <= Game::RIGHT);
+    assert(negation <= Game::NOTNOTNOT);
+
+    emit generateLevel();
+}
+
+
+Game::INPUT Game::GameState::getInput() {
+    return input;
+}
+
+
+Game::NEGATION Game::GameState::getNegation() {
+    return negation;
 }

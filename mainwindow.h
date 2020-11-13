@@ -25,7 +25,7 @@ private:
 private slots:
     void colorPressed();
 
-    void updateTimerBar(int remaining);
 
+    void generatedLevel();
 };
 #endif // MAINWINDOW_H

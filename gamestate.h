@@ -10,8 +10,28 @@
 namespace Game {
 
 
+enum INPUT {
+    RED,
+    GREEN,
+    BLUE,
+    YELLOW,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
+
+enum NEGATION {
+    NONE,
+    NOT,
+    NOTNOT,
+    NOTNOTNOT
+};
+
+
 /**
- * @brief The GameState class. Inherits from QObject for
+ * @brief The GameState class. Inherits from QObject for signals and slots.
  */
 class GameState : public QObject
 {
@@ -22,24 +42,48 @@ Q_OBJECT
 signals:
     void timeOut();
     void timeRemaining(int remaining);
+    void generateLevel();
 
 private:
-
     bool active;
+
 
     unsigned int score;
 
+
     unsigned int timerMax;  // Max for the timer. Will decrease every tick.
+
+    INPUT input;  // TODO: change this to a byte
+    NEGATION negation;
 
     QTimer *timer;
     QTimer *updateTimer;
+
 
     void resetTime();
 
 
 private slots:
+    /**
+     * @brief Slot for when primary timer runs out
+     */
     void timedOut();
+
+
+    /**
+     * @brief Slot for updating the timer visual on the UI
+     */
     void updateTime();
+
+
+    /**
+     * @brief Generate a level for the game.
+     */
+    void generate();
+
+
+//    void processInput(int input);
+
 
 public:
     /**
@@ -48,7 +92,11 @@ public:
     GameState();
 
 
+    /**
+     * @brief Deconstructor
+     */
     ~GameState();
+
 
     /**
      * @brief Increases score by 1
@@ -56,14 +104,11 @@ public:
     void increaseScore();
 
 
-    unsigned int getScore();
-
-
     /**
-     * @brief getTimer
-     * @return QTimer *
+     * @brief getScore
+     * @return score
      */
-    QTimer *getTimer();
+    unsigned int getScore();
 
 
     /**
@@ -71,13 +116,25 @@ public:
      */
     void startGame();
 
+
     /**
      * @brief Resets game state. Score goes to 0, and timer resets.
      */
     void reset();
 
 
+    /**
+     * @brief isActive
+     * @return isActive
+     */
     bool isActive();
+
+
+
+    INPUT getInput();
+
+
+    NEGATION getNegation();
 };
 }
 
