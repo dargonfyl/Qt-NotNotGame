@@ -4,11 +4,12 @@
 #include <iostream>
 #include <random>
 
-#define TIMER_MAX_INTERVAL    5000
+#define TIMER_MAX_INTERVAL    5000 // Timer defines are designed to avoid underflow
 #define TIMER_MIN_INTERVAL    150
+#define TIMER_INCREMENT       250
 #define UPDATE_TIMER_INTERVAL 5
 
-#define MAX_INPUTS_ACTIVE     7 // max number of inputs to be generated
+#define MAX_INPUTS_ACTIVE     7    // max number of inputs to be generated
 
 
 Game::GameState::GameState() :
@@ -34,8 +35,11 @@ Game::GameState::~GameState()
 
 void Game::GameState::nextLevel()
 {
+    timerMax = std::max((unsigned int)TIMER_MIN_INTERVAL, timerMax - TIMER_INCREMENT);
+
+
     generate();
-    // TODO: update the max for the timer.
+    timer->start(timerMax);
 }
 
 
@@ -125,7 +129,7 @@ void Game::GameState::processInput(Game::INPUT input)
 
 void Game::GameState::reset()
 {
-
+    // TODO
 }
 
 
@@ -138,4 +142,10 @@ Game::INPUT Game::GameState::getInput()
 Game::NEGATION Game::GameState::getNegation()
 {
     return negation;
+}
+
+
+unsigned int Game::GameState::getTimerMax()
+{
+    return timerMax;
 }

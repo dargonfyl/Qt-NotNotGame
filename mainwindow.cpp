@@ -40,10 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->blue, SIGNAL(pressed()), this, SLOT(colorPressed()));
     connect(ui->yellow, SIGNAL(pressed()), this, SLOT(colorPressed()));
 
-    // TODO: function for connecting timer
-    ui->timerBar->setRange(0, 5000);
+    ui->timerBar->setRange(0, state->getTimerMax());
     connect(state, SIGNAL(timeRemainingSignal(int)), ui->timerBar, SLOT(setValue(int)));
-
 
     // Connect new levels to visuals
     // TODO: at the start of the game, we always start with green. Fix this (probably will be fixed with a main menu)
@@ -128,6 +126,9 @@ void MainWindow::generatedLevel()
         negation_string += "NOT ";
     }
     negation_label->setText(negation_string);
+
+
+    ui->timerBar->setRange(0, state->getTimerMax());
 }
 
 

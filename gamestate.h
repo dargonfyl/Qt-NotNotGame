@@ -138,6 +138,9 @@ public:
 
 
     NEGATION getNegation();
+
+
+    unsigned int getTimerMax();
 };
 }
 
