@@ -23,7 +23,6 @@ Game::GameState::GameState() :
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
 
     generate();
-
 }
 
 
@@ -70,6 +69,7 @@ bool Game::GameState::isActive() {
 
 void Game::GameState::timedOut() {
     std::cout << "Timed out!" << std::endl;
+    // TODO: reset things.
 }
 
 
@@ -79,9 +79,9 @@ void Game::GameState::updateTime() {
 
 
 void Game::GameState::generate() {
-    input = (Game::INPUT)(rand() & RIGHT);
+    input = (Game::INPUT)(rand() % 8);
     negation = (Game::NEGATION)(rand() % 4);
-    assert(input <= Game::RIGHT);
+    assert(input <= Game::RIGHT);  // These should always pass, but just in case...
     assert(negation <= Game::NOTNOTNOT);
 
     emit generateLevel();

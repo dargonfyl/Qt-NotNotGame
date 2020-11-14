@@ -60,7 +60,9 @@ void MainWindow::colorPressed()
 }
 
 
-void MainWindow::generatedLevel() {
+void MainWindow::generatedLevel()
+{
+    // Update input visuals
     Game::INPUT input = state->getInput();
 
     QLabel *inputs[] = {
@@ -90,5 +92,14 @@ void MainWindow::generatedLevel() {
 
     QLabel *to_update = inputs[input];
     to_update->setText(input_texts[input]);
+
+
+    // Update negation visuals
+    QLabel *negation_label = ui->notIndicator;
+    QString negation_string = "";
+    for (int i = 1; i <= state->getNegation(); ++i) {
+        negation_string += "NOT ";
+    }
+    negation_label->setText(negation_string);
 }
 
