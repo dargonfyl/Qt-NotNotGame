@@ -40,10 +40,10 @@ Q_OBJECT
 
 
 signals:
-    void timeOut();
-    void timeRemaining(int remaining);
-    void generateLevel();
-    void gameOver(unsigned int finalScore);
+    void timeOutSignal();
+    void timeRemainingSignal(int remaining);
+    void generateLevelSignal();
+    void gameOverSignal(unsigned int finalScore);
 
 private:
     bool active;

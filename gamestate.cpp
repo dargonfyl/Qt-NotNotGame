@@ -58,7 +58,7 @@ unsigned int Game::GameState::getScore()
 void Game::GameState::startGame()
 {
     this->generate();
-
+    active = true;
     timer->start(TIMER_MAX_INTERVAL);
     updateTimer->start(UPDATE_TIMER_INTERVAL);
 }
@@ -82,14 +82,14 @@ void Game::GameState::timedOut()
     std::cout << "Timed out!" << std::endl;
     // TODO: reset things.
 
-    emit gameOver(score);
+    emit gameOverSignal(score);
     resetTimer();
 }
 
 
 void Game::GameState::updateTime()
 {
-    emit timeRemaining(timer->remainingTime());
+    emit timeRemainingSignal(timer->remainingTime());
 }
 
 
@@ -105,7 +105,7 @@ void Game::GameState::generate()
     timer->start(TIMER_MAX_INTERVAL);
     updateTimer->start(UPDATE_TIMER_INTERVAL);
 
-    emit generateLevel();
+    emit generateLevelSignal();
 }
 
 
@@ -118,7 +118,7 @@ void Game::GameState::processInput(Game::INPUT input)
         nextLevel(); // Next level
     } else { // Game over
         resetTimer();
-        emit gameOver(score);
+        emit gameOverSignal(score);
     }
 }
 

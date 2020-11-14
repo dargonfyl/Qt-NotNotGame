@@ -42,15 +42,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     // TODO: function for connecting timer
     ui->timerBar->setRange(0, 5000);
-    connect(state, SIGNAL(timeRemaining(int)), ui->timerBar, SLOT(setValue(int)));
+    connect(state, SIGNAL(timeRemainingSignal(int)), ui->timerBar, SLOT(setValue(int)));
 
 
     // Connect new levels to visuals
     // TODO: at the start of the game, we always start with green. Fix this (probably will be fixed with a main menu)
-    connect(state, SIGNAL(generateLevel()), this, SLOT(generatedLevel()));
+    connect(state, SIGNAL(generateLevelSignal()), this, SLOT(generatedLevel()));
 
     // connect game over
-    connect(state, SIGNAL(gameOver(unsigned int)), this, SLOT(gameOverModal(unsigned int)));
+    connect(state, SIGNAL(gameOverSignal(unsigned int)), this, SLOT(gameOverModal(unsigned int)));
 
     state->startGame();
 }
