@@ -70,6 +70,9 @@ bool Game::GameState::isActive() {
 void Game::GameState::timedOut() {
     std::cout << "Timed out!" << std::endl;
     // TODO: reset things.
+
+    emit gameOver(score);
+    reset();
 }
 
 

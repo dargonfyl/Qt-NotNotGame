@@ -2,7 +2,9 @@
 #include "./ui_mainwindow.h"
 
 #include <iostream>
+#include <string>
 #include <QPalette>
+#include <QMessageBox>
 
 
 void setButtonColor(QPushButton *button, Qt::GlobalColor color) {
@@ -39,8 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Connect new levels to visuals
-    // TODO: at the start of the game, we always start with green. Fix this
+    // TODO: at the start of the game, we always start with green. Fix this (probably will be fixed with a main menu)
     connect(state, SIGNAL(generateLevel()), this, SLOT(generatedLevel()));
+
+    // connect game over
+    connect(state, SIGNAL(gameOver(unsigned int)), this, SLOT(gameOverModal(unsigned int)));
 
     state->startGame();
 }
@@ -93,13 +98,22 @@ void MainWindow::generatedLevel()
     QLabel *to_update = inputs[input];
     to_update->setText(input_texts[input]);
 
-
     // Update negation visuals
     QLabel *negation_label = ui->notIndicator;
     QString negation_string = "";
-    for (int i = 1; i <= state->getNegation(); ++i) {
+    for (int i = 1; i <= state->getNegation(); ++i)
+    {
         negation_string += "NOT ";
     }
     negation_label->setText(negation_string);
 }
 
+
+void MainWindow::gameOverModal(unsigned int finalScore)
+{
+    QMessageBox gameOver;
+    QString detailedScore("Final Score: ");
+    detailedScore += QString::number(finalScore);
+    gameOver.setText("Game over!\n" + detailedScore);
+    gameOver.exec();
+}

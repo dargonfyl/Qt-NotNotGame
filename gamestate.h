@@ -43,6 +43,7 @@ signals:
     void timeOut();
     void timeRemaining(int remaining);
     void generateLevel();
+    void gameOver(unsigned int finalScore);
 
 private:
     bool active;

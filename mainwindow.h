@@ -27,5 +27,8 @@ private slots:
 
 
     void generatedLevel();
+
+
+    void gameOverModal(unsigned int);
 };
 #endif // MAINWINDOW_H
