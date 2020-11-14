@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
-
+#include <string>
 
 // NOTE: not using QT_BEGIN_NAMESPACE because it's unecessary
 
@@ -61,7 +61,10 @@ private:
     QTimer *updateTimer;
 
 
-    void resetTime();
+    void nextLevel();
+
+
+    void resetTimer();
 
 
 private slots:
@@ -81,9 +84,6 @@ private slots:
      * @brief Generate a level for the game.
      */
     void generate();
-
-
-//    void processInput(int input);
 
 
 public:
@@ -130,6 +130,8 @@ public:
      */
     bool isActive();
 
+
+    void processInput(Game::INPUT input);  // TODO: should it be a string???
 
 
     INPUT getInput();

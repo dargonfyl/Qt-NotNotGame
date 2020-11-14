@@ -32,11 +32,20 @@ Game::GameState::~GameState()
 }
 
 
+void Game::GameState::nextLevel()
+{
+    generate();
+    // TODO: update the max for the timer.
+}
+
+
 void Game::GameState::increaseScore()
 {
     ++score;
+
+#ifdef QT_DEBUG
     std::cout << score << std::endl;
-    generate(); // Next level
+#endif
 }
 
 
@@ -46,7 +55,8 @@ unsigned int Game::GameState::getScore()
 }
 
 
-void Game::GameState::startGame() {
+void Game::GameState::startGame()
+{
     this->generate();
 
     timer->start(TIMER_MAX_INTERVAL);
@@ -54,48 +64,78 @@ void Game::GameState::startGame() {
 }
 
 
-void Game::GameState::reset()
+void Game::GameState::resetTimer()
 {
-    score = 0;
     timer->stop();
     updateTimer->stop();
 }
 
 
-bool Game::GameState::isActive() {
+bool Game::GameState::isActive()
+{
     return active;
 }
 
 
-void Game::GameState::timedOut() {
+void Game::GameState::timedOut()
+{
     std::cout << "Timed out!" << std::endl;
     // TODO: reset things.
 
     emit gameOver(score);
-    reset();
+    resetTimer();
 }
 
 
-void Game::GameState::updateTime() {
+void Game::GameState::updateTime()
+{
     emit timeRemaining(timer->remainingTime());
 }
 
 
-void Game::GameState::generate() {
+void Game::GameState::generate()
+{
     input = (Game::INPUT)(rand() % 8);
     negation = (Game::NEGATION)(rand() % 4);
     assert(input <= Game::RIGHT);  // These should always pass, but just in case...
     assert(negation <= Game::NOTNOTNOT);
 
+
+    // Reset the timer
+    timer->start(TIMER_MAX_INTERVAL);
+    updateTimer->start(UPDATE_TIMER_INTERVAL);
+
     emit generateLevel();
 }
 
 
-Game::INPUT Game::GameState::getInput() {
+void Game::GameState::processInput(Game::INPUT input)
+{
+
+    bool negate = negation % 2;
+    if ((input == this->input) == !negate) {
+        increaseScore();
+        nextLevel(); // Next level
+    } else { // Game over
+        resetTimer();
+        emit gameOver(score);
+    }
+}
+
+
+void Game::GameState::reset()
+{
+
+}
+
+
+Game::INPUT Game::GameState::getInput()
+{
     return input;
 }
 
 
-Game::NEGATION Game::GameState::getNegation() {
+Game::NEGATION Game::GameState::getNegation()
+{
     return negation;
 }

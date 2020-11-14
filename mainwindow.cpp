@@ -3,11 +3,15 @@
 
 #include <iostream>
 #include <string>
+#include <assert.h>
+
 #include <QPalette>
 #include <QMessageBox>
+#include <QKeyEvent>
 
 
-void setButtonColor(QPushButton *button, Qt::GlobalColor color) {
+void setButtonColor(QPushButton *button, Qt::GlobalColor color)
+{
     QPalette pal = button->palette();
     pal.setColor(QPalette::Button, QColor(color));
     button->setAutoFillBackground(true);
@@ -36,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->blue, SIGNAL(pressed()), this, SLOT(colorPressed()));
     connect(ui->yellow, SIGNAL(pressed()), this, SLOT(colorPressed()));
 
+    // TODO: function for connecting timer
     ui->timerBar->setRange(0, 5000);
     connect(state, SIGNAL(timeRemaining(int)), ui->timerBar, SLOT(setValue(int)));
 
@@ -50,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
     state->startGame();
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -61,7 +67,21 @@ void MainWindow::colorPressed()
 {
     QPushButton *button = (QPushButton *)sender();
     (void)button; // TODO: do something with the button
-    state->increaseScore();
+    std::string name = button->objectName().toStdString();
+
+    Game::INPUT input;
+    if (name == "red") {
+        input = Game::RED;
+    } else if (name == "green") {
+        input = Game::GREEN;
+    } else if (name == "blue") {
+        input = Game::BLUE;
+    } else {  // name == "yellow"
+        assert(name == "yellow");
+        input = Game::YELLOW;
+    }
+
+    state->processInput(input);
 }
 
 
@@ -70,7 +90,8 @@ void MainWindow::generatedLevel()
     // Update input visuals
     Game::INPUT input = state->getInput();
 
-    QLabel *inputs[] = {
+    QLabel *inputs[] =
+    {
         ui->input0,
         ui->input1,
         ui->input2,
@@ -84,7 +105,8 @@ void MainWindow::generatedLevel()
     for (int i = 0; i < 8; i++)
         inputs[i]->clear();
 
-    QString input_texts[] = {
+    QString input_texts[] =
+    {
         "RED",
         "GREEN",
         "BLUE",
@@ -116,4 +138,24 @@ void MainWindow::gameOverModal(unsigned int finalScore)
     detailedScore += QString::number(finalScore);
     gameOver.setText("Game over!\n" + detailedScore);
     gameOver.exec();
+}
+
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    switch(event->key())
+    {
+    case(Qt::Key_Up):
+        state->processInput(Game::UP);
+        break;
+    case(Qt::Key_Down):
+        state->processInput(Game::DOWN);
+        break;
+    case(Qt::Key_Left):
+        state->processInput(Game::LEFT);
+        break;
+    case(Qt::Key_Right):
+        state->processInput(Game::RIGHT);
+        break;
+    }
 }

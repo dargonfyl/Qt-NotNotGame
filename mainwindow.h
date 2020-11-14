@@ -14,13 +14,20 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
     Game::GameState *state;
+
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 
 private slots:
     void colorPressed();
