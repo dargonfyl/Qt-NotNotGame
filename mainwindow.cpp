@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
     // Set button colors
     setButtonColor(ui->red, Qt::red);
     setButtonColor(ui->green, Qt::green);
@@ -49,6 +48,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     // connect game over
     connect(state, SIGNAL(gameOverSignal(unsigned int)), this, SLOT(gameOverModal(unsigned int)));
+
+
+    // Connect score to the score display
+    connect(state, SIGNAL(scoreChangeSignal(int)), ui->scoreDisplay, SLOT(display(int)));
 
     state->startGame();
 }
@@ -127,7 +130,7 @@ void MainWindow::generatedLevel()
     }
     negation_label->setText(negation_string);
 
-
+    // Update the timer
     ui->timerBar->setRange(0, state->getTimerMax());
 }
 

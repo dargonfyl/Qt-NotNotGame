@@ -44,6 +44,7 @@ signals:
     void timeRemainingSignal(int remaining);
     void generateLevelSignal();
     void gameOverSignal(unsigned int finalScore);
+    void scoreChangeSignal(int score);
 
 private:
     bool active;

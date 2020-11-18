@@ -46,7 +46,7 @@ void Game::GameState::nextLevel()
 void Game::GameState::increaseScore()
 {
     ++score;
-
+    emit scoreChangeSignal(static_cast<int>(score));
 #ifdef QT_DEBUG
     std::cout << score << std::endl;
 #endif
